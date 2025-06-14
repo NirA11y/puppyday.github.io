@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PuppyDay - Track Your Puppy's Journey</title>
+    <meta name="description" content="PuppyDay is the perfect iOS app for puppy owners to track daily activities, monitor growth, and manage their puppy's development with beautiful insights and analytics.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #1B4F8C;
+            --dark-blue: #15396B;
+            --light-blue: #E8F0F8;
+            --text-dark: #1A1A1A;
+            --text-gray: #4A4A4A;
+            --text-light: #767676;
+            --background: #FFFFFF;
+            --section-bg: #F8FAFE;
+            --border: #E5E5E7;
+            --shadow: 0 4px 20px rgba(27, 79, 140, 0.1);
+            --shadow-hover: 0 8px 30px rgba(27, 79, 140, 0.15);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--background);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzFCNEY4QyIvPgo8cGF0aCBkPSJNNiA5QzYgNy4zNDMxNSA3LjM0MzE1IDYgOSA2SDE0SDE4SDIzQzI0LjY1NjkgNiAyNiA3LjM0MzE1IDI2IDlWMTNWMTdWMjJDMjYgMjMuNjU2OSAyNC42NTY5IDI1IDIzIDI1SDE4SDE0SDlDNy4zNDMxNSAyNSA2IDIzLjY1NjkgNiAyMlYxN1YxM1Y5WiIgZmlsbD0iIzFCNEY4QyIvPgo8cGF0aCBkPSJNNy41IDguNUM3LjUgNy4xMTkyOSA4LjYxOTI5IDYgMTAgNkgxNEgxOEgyMkMyMy4zODA3IDYgMjQuNSA3LjExOTI5IDI0LjUgOC41VjEyLjVWMTYuNVYyMC41QzI0LjUgMjEuODgwNyAyMy4zODA3IDIzIDIyIDIzSDE4SDE0SDEwQzguNjE5MjkgMjMgNy41IDIxLjg4MDcgNy41IDIwLjVWMTYuNVYxMi41VjguNVoiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIzIi8+CjxlbGxpcHNlIGN4PSIxMC41IiBjeT0iMTEuNSIgcng9IjEuNSIgcnk9IjIiIGZpbGw9IiNGRkZGRkYiLz4KPGVsbGlwc2UgY3g9IjEzLjUiIGN5PSIxMC41IiByeD0iMS41IiByeT0iMiIgZmlsbD0iI0ZGRkZGRiIvPgo8ZWxsaXBzZSBjeD0iMTguNSIgY3k9IjEwLjUiIHJ4PSIxLjUiIHJ5PSIyIiBmaWxsPSIjRkZGRkZGIi8+CjxlbGxpcHNlIGN4PSIyMS41IiBjeT0iMTEuNSIgcng9IjEuNSIgcnk9IjIiIGZpbGw9IiNGRkZGRkYiLz4KPHBhdGggZD0iTTEwIDEzSDIyQzIyIDE2LjMxMzcgMTkuMzEzNyAxOSAxNiAxOUMxMi42ODYzIDE5IDEwIDE2LjMxMzcgMTAgMTNaIiBmaWxsPSIjRkZGRkZGIi8+CjxwYXRoIGQ9Ik0xNCAxOVYyMC41QzE0IDIxLjMyODQgMTQuNjcxNiAyMiAxNS41IDIyQzE2LjMyODQgMjIgMTcgMjEuMzI4NCAxNyAyMC41VjE5SDE0WiIgZmlsbD0iI0ZGRkZGRiIvPgo8bGluZSB4MT0iMTIiIHkxPSIxNSIgeDI9IjEzIiB5Mj0iMTUiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8bGluZSB4MT0iMTkiIHkxPSIxNSIgeDI9IjIwIiB5Mj0iMTUiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K');
+            background-size: contain;
+            background-repeat: no-repeat;
+            flex-shrink: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-blue);
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--light-blue) 0%, rgba(0, 122, 255, 0.05) 100%);
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary-blue);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .cta-button:hover {
+            background: var(--dark-blue);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 0;
+            background: var(--section-bg);
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: var(--text-dark);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .feature-card p {
+            color: var(--text-gray);
+        }
+
+        /* Target Audience Section */
+        .audience {
+            padding: 5rem 0;
+        }
+
+        .audience h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: var(--text-dark);
+        }
+
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .audience-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--light-blue);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .audience-item:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-3px);
+        }
+
+        .audience-item h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .audience-item p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        /* Privacy Policy Styles */
+        .privacy-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .privacy-content h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--text-dark);
+        }
+
+        .privacy-content h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+            color: var(--primary-blue);
+        }
+
+        .privacy-content p {
+            margin-bottom: 1rem;
+            color: var(--text-gray);
+            line-height: 1.7;
+        }
+
+        .highlight-box {
+            background: var(--light-blue);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-blue);
+            margin: 2rem 0;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* Contact Styles */
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .contact-content h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--text-dark);
+        }
+
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .contact-item h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-blue);
+        }
+
+        .contact-item a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-item a:hover {
+            color: var(--primary-blue);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--section-bg);
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+
+        footer p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-menu {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: var(--shadow);
+                border-top: 1px solid var(--border);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .features h2,
+            .audience h2 {
+                font-size: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .audience-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 2rem 0;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .features,
+            .audience {
+                padding: 3rem 0;
+            }
+
+            .feature-card,
+            .contact-item {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Focus styles for accessibility */
+        *:focus {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+
+        .nav-links a:focus,
+        .logo:focus,
+        .cta-button:focus,
+        .mobile-menu:focus {
+            outline: 2px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+
+        /* Skip to main content link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--primary-blue);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 1001;
+            font-weight: 600;
+        }
+
+        .skip-link:focus {
+            top: 6px;
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            :root {
+                --text-gray: #2D2D2D;
+                --text-light: #4A4A4A;
+                --border: #999999;
+            }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* Loading animation for page transitions */
+        .page {
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .page.active {
+            opacity: 1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip to main content link for screen readers -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Navigation -->
+    <nav role="banner">
+        <div class="nav-container">
+            <a href="#home" class="logo" onclick="showPage('home')" aria-label="PuppyDay - Home">
+                <div class="logo-icon" role="img" aria-label="PuppyDay app icon"></div>
+                PuppyDay
+            </a>
+            <ul class="nav-links" id="navLinks" role="navigation" aria-label="Main navigation">
+                <li><a href="#home" onclick="showPage('home')" class="nav-link active" aria-current="page">Home</a></li>
+                <li><a href="#privacy" onclick="showPage('privacy')" class="nav-link">Privacy Policy</a></li>
+                <li><a href="#contact" onclick="showPage('contact')" class="nav-link">Contact Us</a></li>
+            </ul>
+            <button class="mobile-menu" onclick="toggleMobileMenu()" aria-label="Toggle mobile menu" aria-expanded="false" aria-controls="navLinks">☰</button>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <main id="main-content">
+        <div id="home" class="page active">
+        <!-- Hero Section -->
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="container">
+                <h1 id="hero-title">Track Your Puppy's Journey</h1>
+                <p>The perfect iOS app for puppy owners to monitor daily activities, track growth, and celebrate every milestone in your puppy's development.</p>
+                <a href="https://apps.apple.com/app/puppyday" class="cta-button" aria-label="Download PuppyDay on the App Store">
+                    <span aria-hidden="true">📱</span> Download on App Store
+                </a>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" aria-labelledby="features-title">
+            <div class="container">
+                <h2 id="features-title">Everything You Need to Raise a Happy Puppy</h2>
+                <div class="features-grid" role="list">
+                    <div class="feature-card" role="listitem">
+                        <span class="feature-icon" aria-hidden="true">📅</span>
+                        <h3>Daily Activity Tracking</h3>
+                        <p>Log walks, meals, training sessions, and playtime with just a few taps. Keep a complete record of your puppy's daily routine.</p>
+                    </div>
+                    <div class="feature-card" role="listitem">
+                        <span class="feature-icon" aria-hidden="true">📈</span>
+                        <h3>Growth Monitoring</h3>
+                        <p>Track your puppy's weight, height, and development milestones. Watch them grow with detailed progress charts.</p>
+                    </div>
+                    <div class="feature-card" role="listitem">
+                        <span class="feature-icon" aria-hidden="true">🗓️</span>
+                        <h3>Beautiful Calendar View</h3>
+                        <p>Visualize your puppy's activity history in an elegant calendar interface. Spot patterns and plan better.</p>
+                    </div>
+                    <div class="feature-card" role="listitem">
+                        <span class="feature-icon" aria-hidden="true">📊</span>
+                        <h3>Insights & Analytics</h3>
+                        <p>Get meaningful insights about your puppy's behavior patterns, activity levels, and health trends.</p>
+                    </div>
+                    <div class="feature-card" role="listitem">
+                        <span class="feature-icon" aria-hidden="true">📖</span>
+                        <h3>Monthly Development Guide</h3>
+                        <p>Access expert guidance for each stage of your puppy's development with our comprehensive monthly guides.</p>
+                    </div>
+                    <div class="feature-card" role="listitem">
+                        <span class="feature-icon" aria-hidden="true">🔒</span>
+                        <h3>Privacy First</h3>
+                        <p>All your data stays on your device. No cloud storage, no data collection - just pure privacy and peace of mind.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Target Audience Section -->
+        <section class="audience" aria-labelledby="audience-title">
+            <div class="container">
+                <h2 id="audience-title">Perfect For Every Puppy Parent</h2>
+                <div class="audience-grid" role="list">
+                    <div class="audience-item" role="listitem">
+                        <h3><span aria-hidden="true">🆕</span> New Puppy Owners</h3>
+                        <p>First-time puppy parents who want to do everything right</p>
+                    </div>
+                    <div class="audience-item" role="listitem">
+                        <h3><span aria-hidden="true">⏰</span> Busy Pet Parents</h3>
+                        <p>Working professionals who need to stay organized</p>
+                    </div>
+                    <div class="audience-item" role="listitem">
+                        <h3><span aria-hidden="true">🎓</span> Professional Trainers</h3>
+                        <p>Dog trainers managing multiple puppies and clients</p>
+                    </div>
+                    <div class="audience-item" role="listitem">
+                        <h3><span aria-hidden="true">📝</span> Detail-Oriented Owners</h3>
+                        <p>Anyone who loves keeping detailed records of their pet's life</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Privacy Policy Page -->
+    <div id="privacy" class="page">
+        <div class="container">
+            <div class="privacy-content">
+                <h1>Privacy Policy</h1>
+                
+                <div class="highlight-box">
+                    <p><strong>Your Privacy is Our Priority:</strong> PuppyDay stores all data locally on your device. We don't collect, store, or share any of your personal information.</p>
+                </div>
+
+                <h2>Data Storage</h2>
+                <p>PuppyDay is designed with privacy at its core. All your puppy's information, including activity logs, growth data, photos, and personal notes, are stored exclusively on your iOS device using local storage mechanisms.</p>
+
+                <h2>No Data Collection</h2>
+                <p>We do not collect any personal information, usage data, or analytics from our users. The app functions entirely offline after download, ensuring complete privacy and control over your data.</p>
+
+                <h2>No Third-Party Sharing</h2>
+                <p>Since we don't collect any data, there is nothing to share with third parties. Your puppy's information remains private and secure on your device.</p>
+
+                <h2>Device Security</h2>
+                <p>Your data security depends on your device's security measures. We recommend keeping your iOS device updated and using appropriate security features like passcodes or biometric authentication.</p>
+
+                <h2>Data Backup</h2>
+                <p>If you use iCloud backup for your device, your PuppyDay data may be included in those backups according to your iCloud settings. This backup is managed entirely by Apple and follows their privacy policies.</p>
+
+                <h2>Children's Privacy</h2>
+                <p>Our app does not collect personal information from anyone, including children under 13. All data remains on the user's device.</p>
+
+                <h2>Changes to This Policy</h2>
+                <p>Any changes to this privacy policy will be communicated through app updates. Since we don't collect user contact information, policy changes will be noted in the app and on this website.</p>
+
+                <h2>Contact Us</h2>
+                <p>If you have questions about this privacy policy, please contact us at support@puppyday.app</p>
+
+                <p><em>Last updated: June 2025</em></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Contact Us Page -->
+    <main id="contact" class="page" style="display: none;">
+        <div class="container">
+            <div class="contact-content">
+                <h1>Contact Us</h1>
+                <p>We'd love to hear from you! Whether you have questions, feedback, or need support with PuppyDay, we're here to help.</p>
+                
+                <div class="contact-methods">
+                    <div class="contact-item">
+                        <h3><span aria-hidden="true">📧</span> Email Support</h3>
+                        <a href="mailto:support@puppyday.app" aria-label="Send email to support@puppyday.app">support@puppyday.app</a>
+                        <p>For technical support, feature requests, or general inquiries</p>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <h3><span aria-hidden="true">🦋</span> Follow Us on Bluesky</h3>
+                        <a href="https://bsky.app/profile/puppydayapp.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Follow PuppyDay on Bluesky (opens in new window)">@puppydayapp.bsky.social</a>
+                        <p>Stay updated with the latest news, tips, and app updates</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 3rem; padding: 2rem; background: var(--light-blue); border-radius: 12px;">
+                    <h3 style="color: var(--primary-blue); margin-bottom: 1rem;"><span aria-hidden="true">💡</span> Before You Contact Us</h3>
+                    <p style="color: var(--text-gray); margin: 0;">Check out the in-app help section first - many common questions are answered there. For faster support, please include your iOS version and device model when reporting technical issues.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer role="contentinfo">
+        <div class="container">
+            <p>&copy; 2025 PuppyDay. All rights reserved. Made with ❤️ for puppy parents everywhere.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Page navigation
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+                page.style.display = 'none';
+                page.setAttribute('aria-hidden', 'true');
+            });
+            
+            // Show selected page
+            const selectedPage = document.getElementById(pageId);
+            selectedPage.classList.add('active');
+            selectedPage.style.display = 'block';
+            selectedPage.setAttribute('aria-hidden', 'false');
+            
+            // Update navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                link.removeAttribute('aria-current');
+            });
+            
+            // Find and update the current nav link
+            const currentLink = document.querySelector(`[onclick="showPage('${pageId}')"]`);
+            if (currentLink) {
+                currentLink.classList.add('active');
+                currentLink.setAttribute('aria-current', 'page');
+            }
+            
+            // Close mobile menu if open
+            const navLinks = document.getElementById('navLinks');
+            const mobileMenuButton = document.querySelector('.mobile-menu');
+            navLinks.classList.remove('active');
+            mobileMenuButton.setAttribute('aria-expanded', 'false');
+            
+            // Scroll to top and focus on main content
+            window.scrollTo(0, 0);
+            const mainContent = document.getElementById('main-content') || selectedPage;
+            mainContent.focus();
+            
+            // Update page title
+            const pageTitles = {
+                'home': 'PuppyDay - Track Your Puppy\'s Journey',
+                'privacy': 'Privacy Policy - PuppyDay',
+                'contact': 'Contact Us - PuppyDay'
+            };
+            document.title = pageTitles[pageId] || 'PuppyDay';
+        }
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const mobileMenuButton = document.querySelector('.mobile-menu');
+            const isExpanded = navLinks.classList.toggle('active');
+            
+            mobileMenuButton.setAttribute('aria-expanded', isExpanded.toString());
+            
+            // Focus management
+            if (isExpanded) {
+                const firstLink = navLinks.querySelector('.nav-link');
+                if (firstLink) firstLink.focus();
+            }
+        }
+
+        // Handle keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            // Handle Escape key to close mobile menu
+            if (event.key === 'Escape') {
+                const navLinks = document.getElementById('navLinks');
+                const mobileMenuButton = document.querySelector('.mobile-menu');
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    mobileMenuButton.setAttribute('aria-expanded', 'false');
+                    mobileMenuButton.focus();
+                }
+            }
+        });.add('active');
+            
+            // Update navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            
+            // Close mobile menu if open
+            document.getElementById('navLinks').classList.remove('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.querySelector('nav');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (!nav.contains(event.target)) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Smooth scrolling for internal links
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add smooth scrolling behavior
+            document.documentElement.style.scrollBehavior = 'smooth';
+            
+            // Handle page load with hash
+            if (window.location.hash) {
+                const pageId = window.location.hash.substring(1);
+                if (document.getElementById(pageId)) {
+                    showPage(pageId);
+                }
+            }
+        });
+
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function(event) {
+            if (event.state && event.state.page) {
+                showPage(event.state.page);
+            }
+        });
+
+        // Update URL when navigating (optional, for better UX)
+        const originalShowPage = showPage;
+        showPage = function(pageId) {
+            originalShowPage(pageId);
+            history.pushState({page: pageId}, '', `#${pageId}`);
+        };
+    </script>
+</body>
+</html>
