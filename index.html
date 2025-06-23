@@ -200,6 +200,20 @@
             box-shadow: var(--shadow);
         }
 
+        .feature-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            background: var(--light-blue);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover .feature-image {
+            transform: scale(1.02);
+        }
+
         .feature-icon {
             font-size: 2.5rem;
             margin-bottom: 1rem;
@@ -418,6 +432,10 @@
             .container {
                 padding: 0 15px;
             }
+
+            .feature-image {
+                height: 180px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -437,6 +455,10 @@
             .feature-card,
             .contact-item {
                 padding: 1.5rem;
+            }
+
+            .feature-image {
+                height: 160px;
             }
         }
 
@@ -520,31 +542,27 @@
                 <h2>Everything You Need to Raise a Happy Puppy</h2>
                 <div class="features-grid">
                     <div class="feature-card">
+                        <img src="image1.jpg" alt="Daily activity tracking interface showing a puppy's scheduled walks, meals, and playtime" class="feature-image">
                         <span class="feature-icon">📅</span>
                         <h3>Daily Activity Tracking</h3>
                         <p>Log walks, meals, training sessions, and playtime with just a few taps. Keep a complete record of your puppy's daily routine.</p>
                     </div>
+
+
                     <div class="feature-card">
-                        <span class="feature-icon">📈</span>
-                        <h3>Growth Monitoring</h3>
-                        <p>Track your puppy's weight, height, and development milestones. Watch them grow with detailed progress charts.</p>
-                    </div>
-                    <div class="feature-card">
-                        <span class="feature-icon">🗓️</span>
-                        <h3>Beautiful Calendar View</h3>
-                        <p>Visualize your puppy's activity history in an elegant calendar interface. Spot patterns and plan better.</p>
-                    </div>
-                    <div class="feature-card">
+                        <img src="image4.jpg" alt="Analytics dashboard showing puppy behavior patterns and activity level insights" class="feature-image">
                         <span class="feature-icon">📊</span>
                         <h3>Insights & Analytics</h3>
                         <p>Get meaningful insights about your puppy's behavior patterns, activity levels, and health trends.</p>
                     </div>
                     <div class="feature-card">
+                        <img src="image5.jpg" alt="Monthly development guide page showing puppy milestones and expert recommendations" class="feature-image">
                         <span class="feature-icon">📖</span>
                         <h3>Monthly Development Guide</h3>
                         <p>Access expert guidance for each stage of your puppy's development with our comprehensive monthly guides.</p>
                     </div>
                     <div class="feature-card">
+                        <img src="image6.jpg" alt="Privacy-focused app interface showing secure local data storage with lock icon" class="feature-image">
                         <span class="feature-icon">🔒</span>
                         <h3>Privacy First</h3>
                         <p>All your data stays on your device. No cloud storage, no data collection - just pure privacy and peace of mind.</p>
